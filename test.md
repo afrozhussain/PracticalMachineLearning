@@ -1,3 +1,3 @@
 This is test mark down file
 =============================
-Learning GH
+Learning GH, for coursera.
