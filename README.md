@@ -30,13 +30,13 @@ model = train(training$classe~num_window, method="rf", data= training, trControl
 print(model)
 
 ```
-### Checking the model accuracy on training data set,in sample erro
+### Checking the model accuracy on training data set,in sample error
 
 ```{r}
 confusionMatrix(training$classe , predict(model, training) )
 ```
 
-### Checking the model accuracy on testing data set, OOB or out of sample erro
+### Checking the model accuracy on testing data set, OOB or out of sample error
 
 ```{r}
 confusionMatrix(testing$classe , predict(model, testing) )
