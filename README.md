@@ -18,7 +18,7 @@ inTrain = createDataPartition(data$classe,
 training = data[inTrain,]
 testing = data[-inTrain,]
 ```
-### Model Fitting - in this case randomForest Classifier
+### Model Fitting - in this case randomForest Classifier with k-fold cross validation, with 4 folds
 ```{r}
 trControl = trainControl(method="cv", number=4)
 model = train(training$classe~num_window, method="rf", data= training, trControl=trControl)
@@ -27,9 +27,10 @@ model = train(training$classe~num_window, method="rf", data= training, trControl
 ### Print Model
 
 ```{r}
-summay(model)
+print(model)
 
 ```
+###  Checking the model accuracy on test data set
 
 ```{r}
 confusionMatrix(training$classe , predict(model, training) )
