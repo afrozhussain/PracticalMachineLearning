@@ -188,12 +188,12 @@ hljs.initHighlightingOnLoad();
 ## Loading required package: ggplot2
 </code></pre>
 
-<h2>Reading Training data set</h2>
+<h3>Reading Training data set</h3>
 
 <pre><code class="r">data = read.csv(file=&quot;pml-training.csv&quot;)
 </code></pre>
 
-<h2>Creating Training and Testing Data Set, 80% (training) to 20% (testing)</h2>
+<h3>Creating Training and Testing Data Set, 80% (training) to 20% (testing)</h3>
 
 <pre><code class="r">inTrain = createDataPartition(data$classe, 
                               p=0.8,
@@ -202,7 +202,7 @@ training = data[inTrain,]
 testing = data[-inTrain,]
 </code></pre>
 
-<h2>Model Fitting - in this case randomForest Classifier</h2>
+<h3>Model Fitting - in this case randomForest Classifier with k-fold cross validation, with 4 folds</h3>
 
 <pre><code class="r">trControl = trainControl(method=&quot;cv&quot;, number=4)
 model = train(training$classe~num_window, method=&quot;rf&quot;, data= training, trControl=trControl)
@@ -220,13 +220,32 @@ model = train(training$classe~num_window, method=&quot;rf&quot;, data= training,
 ## Warning: invalid mtry: reset to within valid range
 </code></pre>
 
-<h2>Print Model</h2>
+<h3>Print Model</h3>
 
-<pre><code class="r">summay(model)
+<pre><code class="r">print(model)
 </code></pre>
 
-<pre><code>## Error: could not find function &quot;summay&quot;
+<pre><code>## Random Forest 
+## 
+## 15699 samples
+##   159 predictors
+##     5 classes: &#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (4 fold) 
+## 
+## Summary of sample sizes: 11774, 11774, 11774, 11775 
+## 
+## Resampling results
+## 
+##   Accuracy  Kappa  Accuracy SD  Kappa SD
+##   1         1      2e-04        3e-04   
+## 
+## Tuning parameter &#39;mtry&#39; was held constant at a value of 2
+## 
 </code></pre>
+
+<h3>Checking the model accuracy on training data set,in sample erro</h3>
 
 <pre><code class="r">confusionMatrix(training$classe , predict(model, training) )
 </code></pre>
@@ -264,7 +283,45 @@ model = train(training$classe~num_window, method=&quot;rf&quot;, data= training,
 ## Balanced Accuracy       1.000    1.000    1.000    1.000    1.000
 </code></pre>
 
-<h2>Predicting on provided test data set</h2>
+<h3>Checking the model accuracy on testing data set, OOB or out of sample erro</h3>
+
+<pre><code class="r">confusionMatrix(testing$classe , predict(model, testing) )
+</code></pre>
+
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction    A    B    C    D    E
+##          A 1116    0    0    0    0
+##          B    0  759    0    0    0
+##          C    0    0  684    0    0
+##          D    0    0    0  643    0
+##          E    0    0    0    0  721
+## 
+## Overall Statistics
+##                                     
+##                Accuracy : 1         
+##                  95% CI : (0.999, 1)
+##     No Information Rate : 0.284     
+##     P-Value [Acc &gt; NIR] : &lt;2e-16    
+##                                     
+##                   Kappa : 1         
+##  Mcnemar&#39;s Test P-Value : NA        
+## 
+## Statistics by Class:
+## 
+##                      Class: A Class: B Class: C Class: D Class: E
+## Sensitivity             1.000    1.000    1.000    1.000    1.000
+## Specificity             1.000    1.000    1.000    1.000    1.000
+## Pos Pred Value          1.000    1.000    1.000    1.000    1.000
+## Neg Pred Value          1.000    1.000    1.000    1.000    1.000
+## Prevalence              0.284    0.193    0.174    0.164    0.184
+## Detection Rate          0.284    0.193    0.174    0.164    0.184
+## Detection Prevalence    0.284    0.193    0.174    0.164    0.184
+## Balanced Accuracy       1.000    1.000    1.000    1.000    1.000
+</code></pre>
+
+<h3>Predicting on provided test data set</h3>
 
 <pre><code class="r">testData = read.csv(file=&quot;pml-testing.csv&quot;)
 pred = predict(model, testData)
