@@ -30,32 +30,20 @@ model = train(training$classe~num_window, method="rf", data= training, trControl
 print(model)
 
 ```
-<<<<<<< HEAD
 ### Checking the model accuracy on training data set,in sample erro
-=======
-###  Checking the model accuracy on training data set, in sample error
->>>>>>> cce942bd3b9e122e0532bbc62ba1c48c3eedb677
 
 ```{r}
 confusionMatrix(training$classe , predict(model, training) )
 ```
 
-<<<<<<< HEAD
 ### Checking the model accuracy on testing data set, OOB or out of sample erro
-=======
-###  Checking the model accuracy on testing data set, OOB or out of sample error
->>>>>>> cce942bd3b9e122e0532bbc62ba1c48c3eedb677
 
 ```{r}
 confusionMatrix(testing$classe , predict(model, testing) )
 ```
 
 
-<<<<<<< HEAD
 ### Predicting on provided test data set 
-=======
-### Predicting on provided test data set
->>>>>>> cce942bd3b9e122e0532bbc62ba1c48c3eedb677
 ```{r}
 testData = read.csv(file="pml-testing.csv")
 pred = predict(model, testData)
